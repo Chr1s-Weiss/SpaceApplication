@@ -1,0 +1,72 @@
+:root{
+  scroll-behavior: smooth;
+}
+
+li{
+  list-style-type: none;
+}
+
+img{
+  max-width: 100%;
+}
+
+.gal{
+  padding: 5rem 0;
+  background-color: #131723;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gallery {
+  margin: 1rem auto;
+  width: 80%;
+  height: 400px;
+  object-fit: cover;
+}
+
+.chart-container {
+  width: 80%;
+  height: 50%;
+  margin: auto;
+}
+
+.picture{
+  width: 80%;
+  margin: 0 auto;
+}
+
+.gradient-custom-2 {
+  /* fallback for old browsers */
+  background: #fccb90;
+  
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+  
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+  border: none;
+  }
+
+.profile-button {
+  margin: 0 1em;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #e9e9e9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+}
+
+.profile-picture.profile-picture.profile-picture {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

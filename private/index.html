@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NASA API APPLICATION</title>
+
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <!-- Bootstrap core CSS -->
+  <link href="./css/bootstrap.min.css" rel="stylesheet">
+  <link href="./css/dashboard1.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="app1">
+    <nav  id="nav" class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand">Space API</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#carouselExampleControls">Carousel</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#chart">Diameter Chart</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#gallery">Gallery</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#magnitude">Magnitude Chart</a>
+            </li>
+          </ul>
+          <form class="d-flex" @submit.prevent="searchAsteroid">
+            <input class="form-control me-2" type="search" placeholder="Search your favorite asteroid" aria-label="Search" v-model="searchTerm">
+            <button class="btn btn-outline-danger" type="submit">Search</button>
+          </form>
+          <li class="nav-item">
+            <!-- Button trigger modal -->
+            <div class="profile-button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <img class="nav-link profile-picture" v-bind:src="'data:image;base64,' + cImage">
+            </div>
+          </li>
+        </div>
+      </div>
+    </nav>
+
+    <h1 class="text-center fs-1 m-4">Space API</h1>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{cLogin}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img v-bind:src="'data:image;base64,' + cImage" class="img-thumbnail rounded mx-auto d-block" alt='profile-picture'>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button @click="handleLogout" type="button" class="btn btn-primary gradient-custom-2">Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search result -->  
+    <div class="container">
+      <div v-if="searchResult" class="row row-cols-1 row-cols-md-3 g-4">
+        <h3>Search Results: {{searchTerm}}</h3>
+        <div class="col">
+          <div class="card shadow-sm border-dark mb-3" style="max-width: 18rem;">
+            <div class="card-header bg-transparent border-secondary">
+              <input type="text" id="name" v-model="newAstereoid.name">
+            </div>
+            <div class="card-body text-dark">
+              <h5 class="card-title">Estimated diameter:</h5>
+              <p class="card-text">min: <input type="value" id="min-diameter" v-model="newAstereoid.estimated_diameter.estimated_diameter_min"></p>
+              <p class="card-text">max: <input type="value" id="max-diameter" v-model="newAstereoid.estimated_diameter.estimated_diameter_max"></p>
+              <h5 class="card-title">Absolute magnitude:</h5>
+              <p class="card-text"><input type="value" id="magnitude" v-model="newAstereoid.absolute_magnitude_h"></p>
+            </div>
+            <div class="card-header bg-transparent border-secondary">{{newAstereoid.name}}</div>
+            <button @click="createAstereoid()">Create</button>
+           </div>
+        </div>
+
+
+        <div v-for="(item, index) in searchResult" class="col" :key="item._id">
+          <div class="card border-secondary mb-3" style="max-width: 18rem;">
+            <div class="card-header bg-transparent border-secondary">
+              <input type="text" id="name" v-model="item.name">
+            </div>
+            <div class="card-body text-dark">
+              <h5 class="card-title">Estimated diameter:</h5>
+              <p class="card-text">min: {{item.estimated_diameter.estimated_diameter_min}}</p>
+              <p class="card-text">max: {{item.estimated_diameter.estimated_diameter_max}}</p>
+              <h5 class="card-title">Absolute magnitude:</h5>
+              <p class="card-text">{{item.absolute_magnitude_h}}</p>
+            </div>
+            <div class="card-header bg-transparent border-secondary">{{item.name}}</div>
+            <button @click="updateAsteroid(index)">Update</button>
+            <button @click="deleteAsteroid(index)">Delete</button>
+           </div>
+        </div>
+      </div>
+    </div>
+
+
+  <!-- Carousel -->
+  <div class="container">
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img v-if="pic && pic.length > 0" v-bind:src="'data:image;base64,' + pic[0].image" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img v-if="pic && pic.length > 0" v-bind:src="'data:image;base64,' + pic[1].image" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img v-if="pic && pic.length > 0" v-bind:src="'data:image;base64,' + pic[2].image" class="d-block w-100" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="container my-5">
+    <canvas id="chart" style="width:100%;max-width:800px"></canvas>
+  </div>
+
+  <section id="gallery" class="gal">
+    <h2 class="text-center my-5" style="color: white;">Curiosity Gallery</h2>
+    <div class="container">
+      <img v-for="(item, index) in curiosity" v-bind:src="'data:image;base64,' + item.image" class="img-fluid img-rounded gallery" alt="...">
+    </div>
+  </section>
+
+
+  <div id="magnitude" class="container my-5">
+    <canvas id="myChart" style="width:100%;max-width:800px"></canvas>
+  </div>
+
+  <div class="me-5">
+    <div class="me-5">
+      <a type="button" href="/#nav" class="btn btn-secondary btn-lg">Back to Top</a>
+    </div>
+  </div>
+
+  </div>
+  <script type="module" src="./js/dashboard1.js"></script>
+
+  <script src="./js/bootstrap.bundle.min.js"></script>
+  <script src="./js/feather.min.js"></script>
+  <script src="./js/chart.js"> </script>
+</body>
+
+</html>
