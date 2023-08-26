@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NASA API APPLICATION</title>
+
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <!-- Bootstrap core CSS -->
+  <link href="./css/bootstrap.min.css" rel="stylesheet">
+  <link href="./css/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+  <h1>Space Application</h1>
+  <div id="app">
+  
+
+    <!-- https://mdbootstrap.com/docs/standard/extended/login/ -->
+    <section class="h-100 gradient-form" style="background-color: #eee;">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-xl-10">
+            <div class="card rounded-3 text-black">
+              <div class="card-body p-md-5 mx-md-4">
+                <div class="text-center">
+                  <img src="img/shuttle.png"
+                    style="width: 185px;" alt="logo">
+                  <h2>NASA API</h2>
+                  <h4 class="mt-1 mb-5 pb-1">Web-Engineering Project</h4>
+                </div>
+
+                <form v-if="showLoginForm" @submit.prevent="login">
+                  <p>Please login to your account</p>
+
+                  <div class="form-outline mb-4">
+                    <input v-model="name" type="text" id="form2Example11" 
+                    class="form-control" />
+                    <label class="form-label" for="form2Example11">Username</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input v-model="password" type="password" id="form2Example22" class="form-control" />
+                    <label class="form-label" for="form2Example22">Password</label>
+                  </div>
+
+                  <div v-if="error" class="alert alert-danger" role="alert">
+                    {{error}}
+                  </div>
+
+                  <div class="text-center pt-1 mb-5 pb-1">
+                    <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Log
+                    in</button>
+                  </div>
+                </form>
+
+                <form v-if="showRegisterForm" @submit.prevent="register">
+                  <p>Please register a new account</p>
+
+                  <div class="form-outline mb-4">
+                    <input v-model="name" type="text" id="form2Example11" 
+                    class="form-control" />
+                    <label class="form-label" for="form2Example11">Username</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input v-model="password" type="password" id="form2Example22" class="form-control" />
+                    <label class="form-label" for="form2Example22">Password</label>
+                  </div>
+
+                  <div class="text-center pt-1 mb-5 pb-1">
+                    <input v-on:change="loadFile" type="file" class="btn btn-outline-danger">
+                  </div>  
+
+                  <div v-if="error" class="alert alert-danger" role="alert">
+                    {{error}}
+                  </div>
+
+                  <div class="text-center pt-1 mb-5 pb-1">
+                    <button class="btn btn-primary btn-block fa-lg 
+                    gradient-custom-2 mb-3" type="submit">Register</button>
+                  </div>  
+                </form>
+                <div class="d-flex align-items-center justify-content-center pb-4">
+                  <p class="mb-0 me-2">{{ showLoginForm ? "Don't have an account?" : "Already have an account?" }}</p>
+                  <button @click="toggleForms" type="button" class="btn btn-outline-danger">
+                    {{ showLoginForm ? "Create new" : "Login" }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="./js/bootstrap.bundle.min.js"></script>
+  <script src="./js/feather.min.js"></script>
+  <script src="./js/chart.js"> </script>
+
+  <script type="module" src="./js/dashboard.js"></script>
+
+</body>
+
+</html>
